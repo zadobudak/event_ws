@@ -1,0 +1,21 @@
+- git:
+    local-name: catkin_simple
+    uri: https://github.com/catkin/catkin_simple.git
+- git:
+    local-name: nmea_navsat_driver
+    uri: https://github.com/ros-drivers/nmea_navsat_driver.git
+- git:
+    local-name: realsense
+    uri: https://github.com/IntelRealSense/realsense-ros.git
+    version: ros1-legacy
+- git:
+    local-name: rpg_dvs
+    uri: https://github.com/uzh-rpg/rpg_dvs_ros.git
+- git:
+    local-name: velodyne
+    uri: https://github.com/ros-drivers/velodyne.git
+    version: master
+- git:
+    local-name: xsens_driver
+    uri: https://github.com/ethz-asl/ethzasl_xsens_driver.git
+    version: master

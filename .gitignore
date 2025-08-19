@@ -1,0 +1,28 @@
+# ROS workspace build artifacts
+.catkin_tools/
+build/
+devel/
+logs/
+
+# External repositories managed by wstool - DO NOT track these
+src/catkin_simple/
+src/nmea_navsat_driver/
+src/realsense/
+src/rpg_dvs/
+src/velodyne/
+src/xsens_driver/
+
+# ROS workspace files
+.catkin_workspace
+
+# Catkin generated files
+src/CMakeLists.txt
+
+# IDE and editor files
+.vscode/
+.cursorignore
+.idea/
+*.swp
+*.swo
+*~
+
