@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- RealSense Camera Launch Configuration -->
+  
+  <!-- Configurable Parameters -->
+  <arg name="camera_name" default="camera" />
+  <arg name="serial_no" default="" />
+  <arg name="usb_port_id" default="" />
+  <arg name="device_type" default="" />
+  <arg name="json_file_path" default="" />
+  <arg name="output" default="screen" />
+  
+  <!-- RealSense Node -->
+  <node pkg="realsense2_camera" type="realsense2_camera_node" name="$(arg camera_name)" output="$(arg output)">
+    <rosparam command="load" file="$(find sensor_launch)/config/realsense_params.yaml" />
+    
+    <!-- Dynamic parameters -->
+    <param name="serial_no" value="$(arg serial_no)" />
+    <param name="usb_port_id" value="$(arg usb_port_id)" />
+    <param name="device_type" value="$(arg device_type)" />
+    <param name="json_file_path" value="$(arg json_file_path)" />
+    
+    <!-- Camera info URL -->
+    <param name="camera_info_url" value="file://$(find sensor_launch)/config/realsense_camera_info.yaml" />
+  </node>
+  
+  <!-- Optional: TF broadcaster for camera frame -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="$(arg camera_name)_tf_broadcaster"
+        args="0 0 0 0 0 0 base_link $(arg camera_name)_link" />
+</launch>

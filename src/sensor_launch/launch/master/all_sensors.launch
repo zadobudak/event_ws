@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Master Launch File: All Sensors Configuration -->
+  
+  <!-- Global Parameters -->
+  <arg name="enable_realsense" default="true" />
+  <arg name="enable_velodyne" default="true" />
+  <arg name="enable_xsens" default="true" />
+  <arg name="enable_nmea" default="true" />
+  <arg name="enable_dvs" default="false" />
+  
+  <!-- Robot Configuration -->
+  <arg name="robot_name" default="robot" />
+  <arg name="base_frame" default="base_link" />
+  <arg name="output" default="screen" />
+  
+  <!-- Load robot description if available -->
+  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find sensor_launch)/urdf/robot.urdf.xacro'" />
+  
+  <!-- TF Tree -->
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="$(arg output)" />
+  
+  <!-- Include sensor-specific launch files based on arguments -->
+  
+  <!-- RealSense Camera -->
+  <group if="$(arg enable_realsense)">
+    <include file="$(find sensor_launch)/launch/sensors/realsense.launch">
+      <arg name="camera_name" value="$(arg robot_name)_realsense" />
+      <arg name="output" value="$(arg output)" />
+    </include>
+  </group>
+  
+  <!-- Velodyne LiDAR -->
+  <group if="$(arg enable_velodyne)">
+    <include file="$(find sensor_launch)/launch/sensors/velodyne.launch">
+      <arg name="frame_id" value="$(arg robot_name)_velodyne" />
+      <arg name="output" value="$(arg output)" />
+    </include>
+  </group>
+  
+  <!-- XSens IMU -->
+  <group if="$(arg enable_xsens)">
+    <include file="$(find sensor_launch)/launch/sensors/xsens.launch">
+      <arg name="robot_name" value="$(arg robot_name)" />
+      <arg name="output" value="$(arg output)" />
+    </include>
+  </group>
+  
+  <!-- NMEA GPS -->
+  <group if="$(arg enable_nmea)">
+    <include file="$(find sensor_launch)/launch/sensors/nmea.launch">
+      <arg name="robot_name" value="$(arg robot_name)" />
+      <arg name="output" value="$(arg output)" />
+    </include>
+  </group>
+  
+  <!-- DVS Event Camera -->
+  <group if="$(arg enable_dvs)">
+    <include file="$(find sensor_launch)/launch/sensors/dvs.launch">
+      <arg name="robot_name" value="$(arg robot_name)" />
+      <arg name="output" value="$(arg output)" />
+    </include>
+  </group>
+  
+  <!-- Optional: RViz for visualization -->
+  <arg name="rviz" default="false" />
+  <group if="$(arg rviz)">
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find sensor_launch)/rviz/sensor_config.rviz" output="$(arg output)" />
+  </group>
+  
+</launch>

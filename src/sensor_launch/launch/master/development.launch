@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Development Configuration: Minimal sensors for development -->
+  
+  <!-- Include the master launch with development-specific settings -->
+  <include file="$(find sensor_launch)/launch/master/all_sensors.launch">
+    <!-- Only enable essential sensors for development -->
+    <arg name="enable_realsense" value="true" />
+    <arg name="enable_velodyne" value="false" />
+    <arg name="enable_xsens" value="false" />
+    <arg name="enable_nmea" value="false" />
+    <arg name="enable_dvs" value="false" />
+    
+    <!-- Development settings -->
+    <arg name="robot_name" value="dev_robot" />
+    <arg name="output" value="screen" />
+    <arg name="rviz" value="true" />
+  </include>
+  
+  <!-- Development-specific nodes -->
+  <node pkg="rqt_console" type="rqt_console" name="rqt_console" output="screen" />
+  <node pkg="rqt_graph" type="rqt_graph" name="rqt_graph" output="screen" />
+  
+</launch>

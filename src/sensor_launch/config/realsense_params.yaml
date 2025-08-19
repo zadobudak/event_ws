@@ -1,0 +1,41 @@
+# RealSense Camera Parameters
+realsense2_camera:
+  # Camera configuration
+  enable_color: true
+  enable_depth: true
+  enable_infra1: false
+  enable_infra2: false
+  enable_fisheye1: false
+  enable_fisheye2: false
+  enable_pose: false
+  enable_gyro: true
+  enable_accel: true
+  
+  # Depth stream settings
+  depth_width: 640
+  depth_height: 480
+  depth_fps: 30
+  
+  # Color stream settings
+  color_width: 640
+  color_height: 480
+  color_fps: 30
+  
+  # IMU settings
+  gyro_fps: 200
+  accel_fps: 63
+  
+  # Filters
+  enable_pointcloud: true
+  enable_sync: true
+  align_depth: true
+  
+  # Advanced settings
+  decimation_filter.enable: true
+  spatial_filter.enable: true
+  temporal_filter.enable: true
+  hole_filling_filter.enable: true
+  
+  # Point cloud settings
+  pointcloud_texture_stream: RS2_STREAM_COLOR
+  pointcloud_texture_index: 0

@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Velodyne LiDAR Launch Configuration -->
+  
+  <!-- Configurable Parameters -->
+  <arg name="device_ip" default="192.168.1.201" />
+  <arg name="port" default="2368" />
+  <arg name="gps_time" default="false" />
+  <arg name="frame_id" default="velodyne" />
+  <arg name="model" default="VLP16" />
+  <arg name="read_fast" default="false" />
+  <arg name="read_once" default="false" />
+  <arg name="repeat_delay" default="0.0" />
+  <arg name="rpm" default="600.0" />
+  <arg name="output" default="screen" />
+  
+  <!-- Velodyne Node -->
+  <node pkg="velodyne_driver" type="velodyne_node" name="velodyne_driver_node" output="$(arg output)">
+    <rosparam command="load" file="$(find sensor_launch)/config/velodyne_params.yaml" />
+    
+    <!-- Dynamic parameters -->
+    <param name="device_ip" value="$(arg device_ip)" />
+    <param name="port" value="$(arg port)" />
+    <param name="gps_time" value="$(arg gps_time)" />
+    <param name="frame_id" value="$(arg frame_id)" />
+    <param name="model" value="$(arg model)" />
+    <param name="read_fast" value="$(arg read_fast)" />
+    <param name="read_once" value="$(arg read_once)" />
+    <param name="repeat_delay" value="$(arg repeat_delay)" />
+    <param name="rpm" value="$(arg rpm)" />
+  </node>
+  
+  <!-- Point Cloud Conversion Node -->
+  <node pkg="velodyne_pointcloud" type="cloud_node" name="cloud_node" output="$(arg output)">
+    <rosparam command="load" file="$(find sensor_launch)/config/velodyne_pointcloud_params.yaml" />
+  </node>
+  
+  <!-- TF broadcaster for LiDAR frame -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="velodyne_tf_broadcaster"
+        args="0 0 0.5 0 0 0 base_link $(arg frame_id)" />
+</launch>

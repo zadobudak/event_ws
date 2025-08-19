@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Dummy Sensor Launch Configuration for Testing -->
+  
+  <!-- Configurable Parameters -->
+  <arg name="sensor_name" default="dummy_sensor" />
+  <arg name="publish_rate" default="1.0" />
+  <arg name="output" default="screen" />
+  
+  <!-- Dummy sensor node that publishes a simple message -->
+  <node pkg="rostopic" type="rostopic" name="$(arg sensor_name)_publisher" 
+        args="pub /$(arg sensor_name)/data std_msgs/String 'Hello from $(arg sensor_name)!' -r $(arg publish_rate)" 
+        output="$(arg output)" />
+  
+  <!-- Dummy sensor info node -->
+  <node pkg="rostopic" type="rostopic" name="$(arg sensor_name)_info" 
+        args="pub /$(arg sensor_name)/info std_msgs/String 'Sensor: $(arg sensor_name), Rate: $(arg publish_rate) Hz' -r 0.1" 
+        output="$(arg output)" />
+  
+  <!-- Simple TF broadcaster for testing -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="$(arg sensor_name)_tf_broadcaster"
+        args="0 0 0.1 0 0 0 base_link $(arg sensor_name)_link" />
+  
+  <!-- Echo node to show the sensor is working -->
+  <node pkg="rostopic" type="rostopic" name="$(arg sensor_name)_echo" 
+        args="echo /$(arg sensor_name)/data" 
+        output="$(arg output)" />
+  
+</launch>

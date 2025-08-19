@@ -1,0 +1,37 @@
+# .dockerignore file for ROS/Event Camera Development Environment
+
+# Git files
+.git
+.gitignore
+
+# Build artifacts
+build/
+devel/
+logs/
+.catkin_tools/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.log
+*.cache
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Node modules (if using any)
+node_modules/
+
+# Documentation builds
+docs/_build/

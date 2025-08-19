@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Test Master Launch File: Includes dummy sensor for testing -->
+  
+  <!-- Global Parameters -->
+  <arg name="enable_dummy_sensor" default="true" />
+  <arg name="robot_name" default="test_robot" />
+  <arg name="output" default="screen" />
+  
+  <!-- Robot Configuration -->
+  <param name="robot_name" value="$(arg robot_name)" />
+  
+  <!-- Base TF frame -->
+  <node pkg="tf2_ros" type="static_transform_publisher" name="base_tf_broadcaster"
+        args="0 0 0 0 0 0 map base_link" />
+  
+  <!-- Include dummy sensor launch file -->
+  <group if="$(arg enable_dummy_sensor)">
+    <include file="$(find sensor_launch)/launch/sensors/dummy_sensor.launch">
+      <arg name="sensor_name" value="$(arg robot_name)_dummy" />
+      <arg name="publish_rate" value="2.0" />
+      <arg name="output" value="$(arg output)" />
+    </include>
+  </group>
+  
+  <!-- Test monitoring nodes -->
+  <node pkg="rqt_graph" type="rqt_graph" name="rqt_graph" output="$(arg output)" />
+  
+  <!-- List all topics for verification -->
+  <node pkg="rostopic" type="rostopic" name="topic_lister" 
+        args="list" 
+        output="$(arg output)" />
+  
+  <!-- Show TF tree -->
+  <node pkg="tf2_tools" type="view_frames.py" name="tf_viewer" 
+        args="--output $(find sensor_launch)/frames.pdf" />
+  
+</launch>
