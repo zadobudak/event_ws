@@ -1,0 +1,10 @@
+# Velodyne Driver Parameters
+device_ip: "192.168.1.201"
+port: 2368
+gps_time: false
+frame_id: "velodyne"
+model: "VLP16"
+read_fast: false
+read_once: false
+repeat_delay: 0.0
+rpm: 600.0

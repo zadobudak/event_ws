@@ -8,32 +8,35 @@
   <arg name="gps_time" default="false" />
   <arg name="frame_id" default="velodyne" />
   <arg name="model" default="VLP16" />
-  <arg name="read_fast" default="false" />
+  <arg name="read_fast" default="true" />
   <arg name="read_once" default="false" />
   <arg name="repeat_delay" default="0.0" />
-  <arg name="rpm" default="600.0" />
+  <arg name="rpm" default="1200.0" />
   <arg name="output" default="screen" />
   
-  <!-- Velodyne Node -->
-  <node pkg="velodyne_driver" type="velodyne_node" name="velodyne_driver_node" output="$(arg output)">
-    <rosparam command="load" file="$(find sensor_launch)/config/velodyne_params.yaml" />
-    
-    <!-- Dynamic parameters -->
-    <param name="device_ip" value="$(arg device_ip)" />
-    <param name="port" value="$(arg port)" />
-    <param name="gps_time" value="$(arg gps_time)" />
-    <param name="frame_id" value="$(arg frame_id)" />
-    <param name="model" value="$(arg model)" />
-    <param name="read_fast" value="$(arg read_fast)" />
-    <param name="read_once" value="$(arg read_once)" />
-    <param name="repeat_delay" value="$(arg repeat_delay)" />
-    <param name="rpm" value="$(arg rpm)" />
-  </node>
-  
-  <!-- Point Cloud Conversion Node -->
-  <node pkg="velodyne_pointcloud" type="cloud_node" name="cloud_node" output="$(arg output)">
-    <rosparam command="load" file="$(find sensor_launch)/config/velodyne_pointcloud_params.yaml" />
-  </node>
+  <!-- Start nodelet manager and driver nodelets -->
+  <include file="$(find velodyne_driver)/launch/nodelet_manager.launch">
+    <arg name="device_ip" value="$(arg device_ip)"/>
+    <arg name="frame_id" value="$(arg frame_id)"/>
+    <arg name="manager" value="$(arg frame_id)_nodelet_manager" />
+    <arg name="model" value="$(arg model)"/>
+    <arg name="port" value="$(arg port)"/>
+    <arg name="read_fast" value="$(arg read_fast)"/>
+    <arg name="read_once" value="$(arg read_once)"/>
+    <arg name="repeat_delay" value="$(arg repeat_delay)"/>
+    <arg name="rpm" value="$(arg rpm)"/>
+    <arg name="gps_time" value="$(arg gps_time)"/>
+  </include>
+
+  <!-- Start transform nodelet -->
+  <include file="$(find velodyne_pointcloud)/launch/transform_nodelet.launch">
+    <arg name="model" value="$(arg model)"/>
+    <arg name="calibration" value="$(find velodyne_pointcloud)/params/VLP16db.yaml"/>
+    <arg name="manager" value="$(arg frame_id)_nodelet_manager" />
+    <arg name="max_range" value="130.0"/>
+    <arg name="min_range" value="0.4"/>
+    <arg name="organize_cloud" value="false"/>
+  </include>
   
   <!-- TF broadcaster for LiDAR frame -->
   <node pkg="tf2_ros" type="static_transform_publisher" name="velodyne_tf_broadcaster"

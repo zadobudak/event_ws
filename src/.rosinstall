@@ -5,10 +5,6 @@
     local-name: nmea_navsat_driver
     uri: https://github.com/ros-drivers/nmea_navsat_driver.git
 - git:
-    local-name: realsense
-    uri: https://github.com/IntelRealSense/realsense-ros.git
-    version: ros1-legacy
-- git:
     local-name: rpg_dvs
     uri: https://github.com/uzh-rpg/rpg_dvs_ros.git
 - git:

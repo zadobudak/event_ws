@@ -1,0 +1,8 @@
+# Velodyne Point Cloud Conversion Parameters
+calibration: ""
+min_range: 0.4
+max_range: 130.0
+view_direction: 0.0
+view_width: 6.28
+organize_cloud: false
+time_offset: 0.0
