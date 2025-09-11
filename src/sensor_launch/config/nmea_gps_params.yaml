@@ -1,0 +1,26 @@
+# NMEA NavSat Driver Parameters
+# GPS/NMEA serial communication configuration
+
+# Serial Communication
+port: "/dev/ttyACM0"        # Serial port for GPS device
+baud: 4800                  # Baud rate (common: 4800, 9600, 38400)
+
+# Frame Configuration
+frame_id: "gps"             # Frame ID for GPS messages
+
+# Time Configuration
+use_GNSS_time: false        # Use GNSS time instead of system time
+time_ref_source: "gps"      # Time reference source: gps, utc, local
+useRMC: false              # Use RMC sentences for position (alternative to GGA)
+
+# Common GPS Baud Rates:
+# - 4800: Standard NMEA 0183 rate
+# - 9600: Common for newer GPS modules
+# - 38400: High-speed GPS modules
+# - 115200: Some high-precision GPS receivers
+
+# Common GPS Serial Ports:
+# - /dev/ttyUSB0: USB-to-serial adapter
+# - /dev/ttyACM0: USB CDC device
+# - /dev/ttyS0: Built-in serial port
+# - /dev/ttyAMA0: Raspberry Pi UART

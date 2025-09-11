@@ -7,4 +7,4 @@ model: "VLP16"
 read_fast: false
 read_once: false
 repeat_delay: 0.0
-rpm: 600.0
+rpm: 1200.0

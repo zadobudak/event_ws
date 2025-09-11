@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- NMEA NavSat Driver Launch Configuration -->
+  
+  <!-- Configurable Parameters -->
+  <arg name="sensor_ns" default="gps" />
+  <arg name="port" default="/dev/ttyACM0" doc="Serial port for GPS device"/>
+  <arg name="baud" default="4800" doc="Baud rate for serial communication"/>
+  <arg name="frame_id" default="gps" doc="Frame ID for GPS messages"/>
+  <arg name="use_GNSS_time" default="false" doc="Use GNSS time instead of system time"/>
+  <arg name="time_ref_source" default="gps" doc="Time reference source (gps, utc, local)"/>
+  <arg name="useRMC" default="false" doc="Use RMC sentences for position (alternative to GGA)"/>
+  <arg name="output" default="screen" doc="Output destination for the node"/>
+  
+  <!-- Load configuration file -->
+  <rosparam command="load" file="$(find sensor_launch)/config/nmea_gps_params.yaml" />
+
+  <group ns="$(arg sensor_ns)">
+    <!-- NMEA Serial Driver Node -->
+    <node name="nmea_serial_driver_node" pkg="nmea_navsat_driver" type="nmea_serial_driver" output="$(arg output)">
+      <param name="port" value="$(arg port)"/>
+      <param name="baud" value="$(arg baud)" />
+      <param name="frame_id" value="$(arg frame_id)" />
+      <param name="use_GNSS_time" value="$(arg use_GNSS_time)" />
+      <param name="time_ref_source" value="$(arg time_ref_source)" />
+      <param name="useRMC" value="$(arg useRMC)" />
+    </node>
+
+  <!-- TF broadcaster for GPS frame -->
+    <node pkg="tf2_ros" type="static_transform_publisher" name="gps_tf_broadcaster"
+          args="0 0 0.1 0 0 0 base_link $(arg frame_id)" />
+  </group>
+  
+</launch>

@@ -1,0 +1,95 @@
+# DAVIS 346 AER Event Camera Parameters
+# Optimized for maximum event frequency
+
+# Basic Configuration
+# serial_number: ""  # Leave empty for auto-detection
+# frame_id: "davis346"
+# master: true
+# reset_timestamps_delay: 2.0
+
+# # Event Streaming Configuration (Maximum Performance)
+# streaming_rate: 0        # 0 = maximum frequency, 30 = 30Hz
+# max_events: 0           # 0 = no limit per message
+# dvs_enabled: true      # Enable DVS events
+# aps_enabled: false     # Disable APS frames for pure event streaming
+# imu_enabled: true      # Enable IMU data
+
+# # APS Configuration (when enabled)
+# exposure: 4000         # Frame exposure time in microseconds
+# frame_delay: 0         # Frame delay
+# frame_mode: 0          # 0=Default, 1=Grayscale, 2=Original
+# frame_interval: 25000  # Frame interval in microseconds (40 FPS)
+
+# # IMU Configuration
+# imu_acc_scale: 3       # 0=2g, 1=4g, 2=8g, 3=16g
+# imu_gyro_scale: 3      # 0=250degps, 1=500degps, 2=1000degps, 3=2000degps
+# imu_low_pass_filter: 1 # 0=260hz, 1=184hz, 2=94hz, 3=44hz, 4=21hz, 5=10hz, 6=5hz
+
+# # Auto-exposure Configuration
+# autoexposure_enabled: false
+# autoexposure_gain: 3
+# autoexposure_desired_intensity: 75
+
+# DAVIS Biases - Stage 1 (Amplifier Configuration)
+PrBp_coarse: 2         # Amplifier in first stage (limits speed)
+PrBp_fine: 255
+PrSFBp_coarse: 1       # Source follower (pixel bandwidth)
+PrSFBp_fine: 199
+
+# DAVIS Biases - Stage 2 (Event Detection)
+DiffBn_coarse: 4       # Amplifier of second stage
+DiffBn_fine: 39
+ONBn_coarse: 6         # Threshold for ON events (contrast sensitivity)
+ONBn_fine: 255
+OFFBn_coarse: 4        # Threshold for OFF events (contrast sensitivity)
+OFFBn_fine: 0
+RefrBp_coarse: 3       # Maximum pixel firing rate (reset time)
+RefrBp_fine: 7
+
+# APS ADC Configuration
+ADC_RefHigh_volt: 24   # APS ADC upper conversion limit (voltage)
+ADC_RefHigh_curr: 7    # APS ADC upper conversion limit (current)
+ADC_RefLow_volt: 2     # APS ADC lower conversion limit (voltage)
+ADC_RefLow_curr: 7     # APS ADC lower conversion limit (current)
+
+# # Hardware Filters
+# background_activity_filter_enabled: true
+# background_activity_filter_time: 80
+# refractory_period_enabled: false
+# refractory_period_time: 2
+# skip_enabled: false
+# skip_every: 0
+# polarity_suppress: false
+# polarity_suppress_type: false
+# polarity_flatten: false
+
+# # DVS Region of Interest (Full Frame)
+# roi_start_column: 0
+# roi_start_row: 0
+# roi_end_column: 345
+# roi_end_row: 259
+
+# # APS Region of Interest (Full Frame)
+# aps_roi_start_column: 0
+# aps_roi_start_row: 0
+# aps_roi_end_column: 345
+# aps_roi_end_row: 259
+
+# # Pixel Filter (Disabled)
+# pixel_0_row: 259
+# pixel_0_column: 345
+# pixel_1_row: 259
+# pixel_1_column: 345
+# pixel_2_row: 259
+# pixel_2_column: 345
+# pixel_3_row: 259
+# pixel_3_column: 345
+# pixel_4_row: 259
+# pixel_4_column: 345
+# pixel_5_row: 259
+# pixel_5_column: 345
+# pixel_6_row: 259
+# pixel_6_column: 345
+# pixel_7_row: 259
+# pixel_7_column: 345
+# pixel_auto_train: false

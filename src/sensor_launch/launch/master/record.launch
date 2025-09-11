@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Record all topics under a robot namespace -->
+
+  <!-- Parameters -->
+  <arg name="robot_name" default="romer" />
+  <arg name="output_dir" default="/mnt/ssd/Romer_event_dataset/bags" />
+  <arg name="bag_prefix" default="$(arg robot_name)_" />
+  <!-- Extra rosbag args (example: lz4 compression, split at 8GB) -->
+  <arg name="record_args" default="--lz4 --split --size=8192" />
+  <arg name="output" default="screen" />
+
+  <!-- Ensure output directory exists before launching (create manually if needed) -->
+
+  <!-- Rosbag record: regex match only topics under /robot_name/
+       Use -o (output prefix) so rosbag appends date-time automatically -->
+  <node pkg="rosbag" type="record" name="record_$(arg robot_name)" output="$(arg output)"
+        args="$(arg record_args) -e -o $(arg output_dir)/$(arg bag_prefix)_ '^/$(arg robot_name)/.*'" />
+
+</launch>

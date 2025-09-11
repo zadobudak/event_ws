@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- DAVIS 346 AER Event Camera Launch Configuration -->
+  
+  <!-- Configurable Parameters -->
+  <arg name="sensor_ns" default="davis" doc="Sub-namespace for this sensor"/>
+  <arg name="serial_number" default="" doc="Serial number of the DAVIS 346 camera (leave empty for auto-detection)"/>
+  <arg name="frame_id" default="davis346" doc="Frame ID for the camera"/>
+  <arg name="enable_visualization" default="false" doc="Enable event visualization"/>
+  <arg name="display_method" default="red-blue" doc="Display method: red-blue, grayscale, or time-surface"/>
+  <arg name="enable_rqt_reconfigure" default="false" doc="Enable rqt_reconfigure for parameter tuning"/>
+  <arg name="enable_imu" default="true" doc="Enable IMU data streaming"/>
+  <arg name="enable_aps" default="true" doc="Enable APS (Active Pixel Sensor) frames"/>
+  <arg name="enable_dvs" default="false" doc="Enable DVS (Dynamic Vision Sensor) events"/>
+  <arg name="streaming_rate" default="100000" doc="Event streaming rate (0 = maximum, 30 = 30Hz)"/>
+  <arg name="max_events" default="100000" doc="Maximum events per message (0 = no limit)"/>
+  <arg name="output" default="screen" doc="Output destination for the nodes"/>
+  
+  <group ns="$(arg sensor_ns)">
+  <!-- DAVIS 346 Camera Driver -->
+  <node name="davis_ros_driver" pkg="davis_ros_driver" type="davis_ros_driver" output="$(arg output)">
+    <param name="serial_number" value="$(arg serial_number)"/>
+    <param name="frame_id" value="$(arg frame_id)"/>
+    
+    <!-- Load configuration file -->
+    <rosparam command="load" file="$(find sensor_launch)/config/davis346_params.yaml" />
+    
+    <!-- Override specific parameters if needed -->
+    <param name="imu_enabled" value="$(arg enable_imu)"/>
+    <param name="aps_enabled" value="$(arg enable_aps)"/>
+    <param name="dvs_enabled" value="$(arg enable_dvs)"/>
+    <!-- <param name="streaming_rate" value="$(arg streaming_rate)"/> -->
+    <param name="max_events" value="$(arg max_events)"/>
+  </node>
+
+  <!-- Event Visualization (optional) -->
+  <node name="dvs_renderer" pkg="dvs_renderer" type="dvs_renderer" output="$(arg output)" if="$(arg enable_visualization)">
+    <param name="display_method" value="$(arg display_method)"/>
+    <remap from="events" to="/dvs/events" />
+    <remap from="image" to="/dvs/image_raw" />
+    <remap from="camera_info" to="/dvs/camera_info" />
+  </node>
+
+  <!-- Image Viewer (optional) -->
+  <node name="image_view" pkg="rqt_image_view" type="rqt_image_view" output="$(arg output)" if="$(arg enable_visualization)">
+    <remap from="image" to="dvs_rendering"/>
+  </node>
+
+  <!-- Parameter Reconfiguration Tool (optional) -->
+  <node name="rqt_reconfigure" pkg="rqt_reconfigure" type="rqt_reconfigure" output="$(arg output)" if="$(arg enable_rqt_reconfigure)"/>
+
+  </group>
+  
+</launch>
